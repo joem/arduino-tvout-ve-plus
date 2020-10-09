@@ -1,8 +1,13 @@
-# Arduino-TVout for Video Experimenter
+# Arduino-TVout-ve-plus
 
-This is a library for generating composite video on an ATmega microcontroller and is a modified version of TVout specifically for using features of the Video Experimenter shield. It allows video output to be overlaid on top of a video signal, allows frames to be captured and modified, etc. For more information, see the [Video Experimenter website](https://nootropicdesign.com/ve).
+This is a library for generating composite video on an ATmega microcontroller and is a modified version of "Arduino-TVout for Video Experimenter" (or TVout-ve), which itself is a modified version of TVout made specifically for using features of the Video Experimenter shield. It allows video output to be overlaid on top of a video signal, allows frames to be captured and modified, etc. For more information, see the [Video Experimenter website](https://nootropicdesign.com/ve).
 
-This repository is based upon the last published version on Google Code, known as Beta1. It has been patched to get around compilation issues associated with using assembly macros on newer versions of the Arduino IDE. The compilation problems with macros emerged after Arduino 1.6.8.
+The goals of this specific fork are:
+- better documentation
+- add/expand features
+- less tied to video experimenter shield
+- namespace doesn't clobber the TVout library
+- maybe remove unused bits (like sound)
 
 Install the 3 libraries in your Arduino sketchbook with the following structure:
 
@@ -11,7 +16,7 @@ Arduino sketchbook
     |
     +--libraries
           |
-          +--TVout_ve
+          +--TVout_ve_plus
           |     |
           |     +--...
           |
