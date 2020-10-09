@@ -24,8 +24,7 @@
 */
 
 /*
- This File contains the timing definitions for the TVout_ve AVR composite video
- generation Library
+ This File contains the timing definitions for the TVout_ve_plus AVR composite video generation Library
 */
 #ifndef VIDEO_TIMING_H
 #define	VIDEO_TIMING_H

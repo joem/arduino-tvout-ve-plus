@@ -22,9 +22,9 @@ Modified 23 November 2006 by David A. Mellis
 #include <math.h>
 #include <avr/pgmspace.h>
 
-#include "TVout_ve.h"
+#include "TVout_ve_plus.h"
 
-void TVout_ve::select_font(const unsigned char * f) {
+void TVout_ve_plus::select_font(const unsigned char * f) {
 	font = f;
 }
 
@@ -32,13 +32,13 @@ void TVout_ve::select_font(const unsigned char * f) {
  * print an 8x8 char c at x,y
  * x must be a multiple of 8
  */
-void TVout_ve::print_char(uint8_t x, uint8_t y, unsigned char c) {
+void TVout_ve_plus::print_char(uint8_t x, uint8_t y, unsigned char c) {
 
 	c -= pgm_read_byte(font+2);
 	bitmap(x,y,font,(c*pgm_read_byte(font+1))+3,pgm_read_byte(font),pgm_read_byte(font+1));
 }
 
-void TVout_ve::inc_txtline() {
+void TVout_ve_plus::inc_txtline() {
 	if (cursor_y >= (display.vres - pgm_read_byte(font+1)))
 		shift(pgm_read_byte(font+1),UP);
 	else
@@ -46,20 +46,20 @@ void TVout_ve::inc_txtline() {
 }
 
 /* default implementation: may be overridden */
-void TVout_ve::write(const char *str)
+void TVout_ve_plus::write(const char *str)
 {
   while (*str)
     write(*str++);
 }
 
 /* default implementation: may be overridden */
-void TVout_ve::write(const uint8_t *buffer, uint8_t size)
+void TVout_ve_plus::write(const uint8_t *buffer, uint8_t size)
 {
   while (size--)
     write(*buffer++);
 }
 
-void TVout_ve::write(uint8_t c) {
+void TVout_ve_plus::write(uint8_t c) {
 	switch(c) {
 		case '\0':			//null
 			break;
@@ -89,32 +89,32 @@ void TVout_ve::write(uint8_t c) {
 	}
 }
 
-void TVout_ve::print(const char str[])
+void TVout_ve_plus::print(const char str[])
 {
   write(str);
 }
 
-void TVout_ve::print(char c, int base)
+void TVout_ve_plus::print(char c, int base)
 {
   print((long) c, base);
 }
 
-void TVout_ve::print(unsigned char b, int base)
+void TVout_ve_plus::print(unsigned char b, int base)
 {
   print((unsigned long) b, base);
 }
 
-void TVout_ve::print(int n, int base)
+void TVout_ve_plus::print(int n, int base)
 {
   print((long) n, base);
 }
 
-void TVout_ve::print(unsigned int n, int base)
+void TVout_ve_plus::print(unsigned int n, int base)
 {
   print((unsigned long) n, base);
 }
 
-void TVout_ve::print(long n, int base)
+void TVout_ve_plus::print(long n, int base)
 {
   if (base == 0) {
     write(n);
@@ -129,72 +129,72 @@ void TVout_ve::print(long n, int base)
   }
 }
 
-void TVout_ve::print(unsigned long n, int base)
+void TVout_ve_plus::print(unsigned long n, int base)
 {
   if (base == 0) write(n);
   else printNumber(n, base);
 }
 
-void TVout_ve::print(double n, int digits)
+void TVout_ve_plus::print(double n, int digits)
 {
   printFloat(n, digits);
 }
 
-void TVout_ve::println(void)
+void TVout_ve_plus::println(void)
 {
   print('\r');
   print('\n');  
 }
 
-void TVout_ve::println(const char c[])
+void TVout_ve_plus::println(const char c[])
 {
   print(c);
   println();
 }
 
-void TVout_ve::println(char c, int base)
+void TVout_ve_plus::println(char c, int base)
 {
   print(c, base);
   println();
 }
 
-void TVout_ve::println(unsigned char b, int base)
+void TVout_ve_plus::println(unsigned char b, int base)
 {
   print(b, base);
   println();
 }
 
-void TVout_ve::println(int n, int base)
+void TVout_ve_plus::println(int n, int base)
 {
   print(n, base);
   println();
 }
 
-void TVout_ve::println(unsigned int n, int base)
+void TVout_ve_plus::println(unsigned int n, int base)
 {
   print(n, base);
   println();
 }
 
-void TVout_ve::println(long n, int base)
+void TVout_ve_plus::println(long n, int base)
 {
   print(n, base);
   println();
 }
 
-void TVout_ve::println(unsigned long n, int base)
+void TVout_ve_plus::println(unsigned long n, int base)
 {
   print(n, base);
   println();
 }
 
-void TVout_ve::println(double n, int digits)
+void TVout_ve_plus::println(double n, int digits)
 {
   print(n, digits);
   println();
 }
 
-void TVout_ve::printPGM(const char str[]) {
+void TVout_ve_plus::printPGM(const char str[]) {
 	char c;
 	while ((c = pgm_read_byte(str))) {
 		str++;
@@ -202,7 +202,7 @@ void TVout_ve::printPGM(const char str[]) {
 	}
 }
 
-void TVout_ve::printPGM(uint8_t x, uint8_t y, const char str[]) {
+void TVout_ve_plus::printPGM(uint8_t x, uint8_t y, const char str[]) {
 	char c;
 	cursor_x = x;
 	cursor_y = y;
@@ -212,54 +212,54 @@ void TVout_ve::printPGM(uint8_t x, uint8_t y, const char str[]) {
 	}
 }
 
-void TVout_ve::set_cursor(uint8_t x, uint8_t y) {
+void TVout_ve_plus::set_cursor(uint8_t x, uint8_t y) {
 	cursor_x = x;
 	cursor_y = y;
 }
 
-void TVout_ve::print(uint8_t x, uint8_t y, const char str[]) {
+void TVout_ve_plus::print(uint8_t x, uint8_t y, const char str[]) {
 	cursor_x = x;
 	cursor_y = y;
 	write(str);
 	
 }
-void TVout_ve::print(uint8_t x, uint8_t y, char c, int base) {
+void TVout_ve_plus::print(uint8_t x, uint8_t y, char c, int base) {
 	cursor_x = x;
 	cursor_y = y;
 	print((long) c, base);
 }
-void TVout_ve::print(uint8_t x, uint8_t y, unsigned char b, int base) {
+void TVout_ve_plus::print(uint8_t x, uint8_t y, unsigned char b, int base) {
 	cursor_x = x;
 	cursor_y = y;
 	print((unsigned long) b, base);
 }
-void TVout_ve::print(uint8_t x, uint8_t y, int n, int base) {
+void TVout_ve_plus::print(uint8_t x, uint8_t y, int n, int base) {
 	cursor_x = x;
 	cursor_y = y;
 	print((long) n, base);
 }
-void TVout_ve::print(uint8_t x, uint8_t y, unsigned int n, int base) {
+void TVout_ve_plus::print(uint8_t x, uint8_t y, unsigned int n, int base) {
 	cursor_x = x;
 	cursor_y = y;
 	print((unsigned long) n, base);
 }
-void TVout_ve::print(uint8_t x, uint8_t y, long n, int base) {
+void TVout_ve_plus::print(uint8_t x, uint8_t y, long n, int base) {
 	cursor_x = x;
 	cursor_y = y;
 	print(n,base);
 }
-void TVout_ve::print(uint8_t x, uint8_t y, unsigned long n, int base) {
+void TVout_ve_plus::print(uint8_t x, uint8_t y, unsigned long n, int base) {
 	cursor_x = x;
 	cursor_y = y;
 	print(n,base);
 }
-void TVout_ve::print(uint8_t x, uint8_t y, double n, int digits) {
+void TVout_ve_plus::print(uint8_t x, uint8_t y, double n, int digits) {
 	cursor_x = x;
 	cursor_y = y;
 	print(n,digits);
 }
 
-void TVout_ve::println(uint8_t x, uint8_t y, const char c[])
+void TVout_ve_plus::println(uint8_t x, uint8_t y, const char c[])
 {
 	cursor_x = x;
 	cursor_y = y;
@@ -267,7 +267,7 @@ void TVout_ve::println(uint8_t x, uint8_t y, const char c[])
 	println();
 }
 
-void TVout_ve::println(uint8_t x, uint8_t y, char c, int base)
+void TVout_ve_plus::println(uint8_t x, uint8_t y, char c, int base)
 {
 	cursor_x = x;
 	cursor_y = y;
@@ -275,7 +275,7 @@ void TVout_ve::println(uint8_t x, uint8_t y, char c, int base)
 	println();
 }
 
-void TVout_ve::println(uint8_t x, uint8_t y, unsigned char b, int base)
+void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned char b, int base)
 {
 	cursor_x = x;
 	cursor_y = y;
@@ -283,7 +283,7 @@ void TVout_ve::println(uint8_t x, uint8_t y, unsigned char b, int base)
 	println();
 }
 
-void TVout_ve::println(uint8_t x, uint8_t y, int n, int base)
+void TVout_ve_plus::println(uint8_t x, uint8_t y, int n, int base)
 {
 	cursor_x = x;
 	cursor_y = y;
@@ -291,7 +291,7 @@ void TVout_ve::println(uint8_t x, uint8_t y, int n, int base)
 	println();
 }
 
-void TVout_ve::println(uint8_t x, uint8_t y, unsigned int n, int base)
+void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned int n, int base)
 {
 	cursor_x = x;
 	cursor_y = y;
@@ -299,7 +299,7 @@ void TVout_ve::println(uint8_t x, uint8_t y, unsigned int n, int base)
 	println();
 }
 
-void TVout_ve::println(uint8_t x, uint8_t y, long n, int base)
+void TVout_ve_plus::println(uint8_t x, uint8_t y, long n, int base)
 {
 	cursor_x = x;
 	cursor_y = y;
@@ -307,7 +307,7 @@ void TVout_ve::println(uint8_t x, uint8_t y, long n, int base)
 	println();
 }
 
-void TVout_ve::println(uint8_t x, uint8_t y, unsigned long n, int base)
+void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned long n, int base)
 {
 	cursor_x = x;
 	cursor_y = y;
@@ -315,7 +315,7 @@ void TVout_ve::println(uint8_t x, uint8_t y, unsigned long n, int base)
 	println();
 }
 
-void TVout_ve::println(uint8_t x, uint8_t y, double n, int digits)
+void TVout_ve_plus::println(uint8_t x, uint8_t y, double n, int digits)
 {
 	cursor_x = x;
 	cursor_y = y;
@@ -323,7 +323,7 @@ void TVout_ve::println(uint8_t x, uint8_t y, double n, int digits)
 	println();
 }
 
-void TVout_ve::printNumber(unsigned long n, uint8_t base)
+void TVout_ve_plus::printNumber(unsigned long n, uint8_t base)
 {
   unsigned char buf[8 * sizeof(long)]; // Assumes 8-bit chars. 
   unsigned long i = 0;
@@ -344,7 +344,7 @@ void TVout_ve::printNumber(unsigned long n, uint8_t base)
       'A' + buf[i - 1] - 10));
 }
 
-void TVout_ve::printFloat(double number, uint8_t digits) 
+void TVout_ve_plus::printFloat(double number, uint8_t digits) 
 { 
   // Handle negative numbers
   if (number < 0.0)
