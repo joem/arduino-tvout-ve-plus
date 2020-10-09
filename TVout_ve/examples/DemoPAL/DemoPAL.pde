@@ -1,9 +1,9 @@
-#include <TVout_ve.h>
+#include <TVout_ve_plus.h>
 #include <fontALL.h>
 #include "schematic.h"
 #include "TVOlogo.h"
 
-TVout_ve TV;
+TVout_ve_plus TV;
 
 int zOff = 150;
 int xOff = 0;
@@ -30,7 +30,7 @@ void setup() {
   TV.select_font(font6x8);
   initOverlay();
   intro();
-  TV.println("I am the TVout_ve\nlibrary running on a freeduino\n");
+  TV.println("I am the TVout_ve_plus\nlibrary running on a freeduino\n");
   TV.delay(2500);
   TV.println("I generate a PAL\nor NTSC composite  video using\ninterrupts\n");
   TV.delay(2500);

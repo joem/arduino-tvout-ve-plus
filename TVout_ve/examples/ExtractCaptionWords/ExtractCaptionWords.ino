@@ -1,4 +1,4 @@
-#include <TVout_ve.h>
+#include <TVout_ve_plus.h>
 #include <fontALL.h>
 #include <pollserial.h>
 #define W 128
@@ -6,7 +6,7 @@
 #define BITWIDTH 5
 #define THRESHOLD 3
 
-TVout_ve tv;
+TVout_ve_plus tv;
 pollserial pserial;
 unsigned char x, y;
 char s[32];

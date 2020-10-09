@@ -1,11 +1,11 @@
-#include <TVout_ve.h>
+#include <TVout_ve_plus.h>
 #include <fontALL.h>
 #include <Controllers.h>
 #include "TVBlaster.h"
 #include "explosions.h"
 
 
-TVout_ve tv;
+TVout_ve_plus tv;
 int oldCrosshairX, oldCrosshairY;
 int crosshairX, crosshairY;
 int laserX, laserY;
