@@ -121,6 +121,7 @@ class TVout_ve_plus {
     //The following function definitions can be found in TVout_ve_plusPrint.cpp
     //printing functions
     void print_char(uint8_t x, uint8_t y, unsigned char c);
+    void print_char_row(uint8_t x, uint8_t y, unsigned char c, uint8_t row, uint8_t lines);
     void set_cursor(uint8_t, uint8_t);
     void select_font(const unsigned char * f);
 

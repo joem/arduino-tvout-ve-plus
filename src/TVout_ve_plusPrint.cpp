@@ -37,6 +37,23 @@ void TVout_ve_plus::print_char(uint8_t x, uint8_t y, unsigned char c) {
   bitmap(x,y,font,(c*pgm_read_byte(font+1))+3,pgm_read_byte(font),pgm_read_byte(font+1));
 }
 
+/*
+ * Print a row of a character from the currently selected font at x,y.
+ * Row sets the first row to print, lines sets how many lines after the row to also print.
+ *
+ * Arguments:
+ *  x:
+ *  y:
+ *  c:
+ *  row:
+ *  lines:
+ *
+ */
+void TVout_ve_plus::print_char_row(uint8_t x, uint8_t y, unsigned char c, uint8_t row, uint8_t lines) {
+  c -= pgm_read_byte(font+2);
+  bitmap(x, y, font, (c*pgm_read_byte(font+1))+3+row, pgm_read_byte(font), lines);
+}
+
 void TVout_ve_plus::inc_txtline() {
   if (cursor_y >= (display.vres - pgm_read_byte(font+1)))
     shift(pgm_read_byte(font+1),UP);
