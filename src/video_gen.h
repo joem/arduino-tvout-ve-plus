@@ -27,17 +27,17 @@
 #define VIDEO_GEN_H
 
 typedef struct {
-	volatile int scanLine;
-	volatile unsigned long frames;
-	unsigned char start_render;
-	int lines_frame;	  	//remove me
-	uint8_t vres;
-	uint8_t hres;
-	uint8_t output_delay; 	//remove me
-	char vscale_const;		//combine me with status switch
-	char vscale;			//combine me too.
-	char vsync_end;			//remove me
-	uint8_t * screen;
+  volatile int scanLine;
+  volatile unsigned long frames;
+  unsigned char start_render;
+  int lines_frame;  //remove me  //TODO: Does this really need to be removed??
+  uint8_t vres;
+  uint8_t hres;
+  uint8_t output_delay; //remove me       //TODO: Does this really need to be removed??
+  char vscale_const;    //combine me with status switch   //TODO: Does this really need to be combined??
+  char vscale;          //combine me too. //TODO: Does this really need to be combined??
+  char vsync_end;       //remove me       //TODO: Does this really need to be removed??
+  uint8_t * screen;
 } TVout_ve_plus_vid;
 
 extern TVout_ve_plus_vid display;
