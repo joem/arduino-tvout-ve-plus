@@ -47,4 +47,9 @@ select_font	KEYWORD2
 print	KEYWORD2
 println	KEYWORD2
 printPGM	KEYWORD2
+print_char_row	KEYWORD2
+write_row	KEYWORD2
+print_row	KEYWORD2
+println_row	KEYWORD2
+
 
