@@ -105,9 +105,84 @@ void TVout_ve_plus::write(uint8_t c) {
   }
 }
 
+
+/*
+ *TODO: Document this function.
+ *
+ *
+ *
+ */
+/* default implementation: may be overridden */
+void TVout_ve_plus::write_row(const char *str, uint8_t row, uint8_t lines)
+{
+  while (*str)
+    write_row(*str++, row, lines);
+}
+
+/*
+ *TODO: Document this function.
+ *
+ *
+ *
+ */
+/* default implementation: may be overridden */
+void TVout_ve_plus::write_row(const uint8_t *buffer, uint8_t size, uint8_t row, uint8_t lines)
+{
+  while (size--)
+    write_row(*buffer++, row, lines);
+}
+
+/*
+ *TODO: Document this function.
+ *
+ *
+ *
+ */
+void TVout_ve_plus::write_row(uint8_t c, uint8_t row, uint8_t lines) {
+  switch(c) {
+    case '\0':      //null
+      break;
+    case '\n':      //line feed
+      cursor_x = 0;
+      inc_txtline();
+      break;
+    case 8:         //backspace
+      cursor_x -= pgm_read_byte(font);
+      print_char(cursor_x,cursor_y,' ');
+      break;
+    case 13:        //carriage return !?!?!?!VT!?!??!?!
+      cursor_x = 0;
+      break;
+    case 14:        //form feed new page(clear screen)
+      //clear_screen();
+      break;
+    default:
+      if (cursor_x >= (display.hres*8 - pgm_read_byte(font))) {
+        cursor_x = 0;
+        inc_txtline();
+        print_char_row(cursor_x, cursor_y, c, row, lines);
+      }
+      else {
+        print_char_row(cursor_x, cursor_y, c, row, lines);
+      }
+      cursor_x += pgm_read_byte(font);
+  }
+}
+
 void TVout_ve_plus::print(const char str[])
 {
   write(str);
+}
+
+/*
+ *TODO: Document this function.
+ *
+ *
+ *
+ */
+void TVout_ve_plus::print_row(const char str[], uint8_t row, uint8_t lines)
+{
+  write_row(str, row, lines);
 }
 
 void TVout_ve_plus::print(char c, int base)
@@ -166,6 +241,17 @@ void TVout_ve_plus::println(const char c[])
 {
   print(c);
   println();
+}
+
+/*
+ *TODO: Document this function.
+ *
+ *
+ */
+void TVout_ve_plus::println_row(const char c[], uint8_t row, uint8_t lines)
+{
+  print_row(c, row, lines);
+  println();                  //FIXME: Might need to do something about this?
 }
 
 void TVout_ve_plus::println(char c, int base)
@@ -275,6 +361,18 @@ void TVout_ve_plus::print(uint8_t x, uint8_t y, double n, int digits) {
   print(n,digits);
 }
 
+/*
+ *TODO: Document this function.
+ *
+ *
+ */
+void TVout_ve_plus::print_row(uint8_t x, uint8_t y, const char str[], uint8_t row, uint8_t lines) {
+  cursor_x = x;
+  cursor_y = y;
+  write_row(str, row, lines);
+
+}
+
 void TVout_ve_plus::println(uint8_t x, uint8_t y, const char c[])
 {
   cursor_x = x;
@@ -336,6 +434,19 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, double n, int digits)
   cursor_x = x;
   cursor_y = y;
   print(n, digits);
+  println();
+}
+
+/*
+ *TODO: Document this function.
+ *
+ *
+ */
+void TVout_ve_plus::println_row(uint8_t x, uint8_t y, const char c[], uint8_t row, uint8_t lines)
+{
+  cursor_x = x;
+  cursor_y = y;
+  print_row(c, row, lines);
   println();
 }
 

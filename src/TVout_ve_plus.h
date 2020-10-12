@@ -121,13 +121,18 @@ class TVout_ve_plus {
     //The following function definitions can be found in TVout_ve_plusPrint.cpp
     //printing functions
     void print_char(uint8_t x, uint8_t y, unsigned char c);
-    void print_char_row(uint8_t x, uint8_t y, unsigned char c, uint8_t row, uint8_t lines);
     void set_cursor(uint8_t, uint8_t);
     void select_font(const unsigned char * f);
+
+    void print_char_row(uint8_t x, uint8_t y, unsigned char c, uint8_t row, uint8_t lines);
 
     void write(uint8_t);
     void write(const char *str);
     void write(const uint8_t *buffer, uint8_t size);
+
+    void write_row(const char *str, uint8_t row, uint8_t lines);
+    void write_row(const uint8_t *buffer, uint8_t size, uint8_t row, uint8_t lines);
+    void write_row(uint8_t c, uint8_t row, uint8_t lines);
 
     void print(const char[]);
     void print(char, int = BYTE);
@@ -137,6 +142,9 @@ class TVout_ve_plus {
     void print(long, int = DEC);
     void print(unsigned long, int = DEC);
     void print(double, int = 2);
+
+    void print_row(const char str[], uint8_t row, uint8_t lines);
+    void print_row(uint8_t x, uint8_t y, const char str[], uint8_t row, uint8_t lines);
 
     void print(uint8_t, uint8_t, const char[]);
     void print(uint8_t, uint8_t, char, int = BYTE);
@@ -166,6 +174,9 @@ class TVout_ve_plus {
     void println(unsigned long, int = DEC);
     void println(double, int = 2);
     void println(void);
+
+    void println_row(const char c[], uint8_t row, uint8_t lines);
+    void println_row(uint8_t x, uint8_t y, const char c[], uint8_t row, uint8_t lines);
 
     void printPGM(const char[]);
     void printPGM(uint8_t, uint8_t, const char[]);
