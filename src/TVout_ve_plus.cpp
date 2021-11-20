@@ -71,20 +71,33 @@ char TVout_ve_plus::begin(uint8_t mode) {
  *    4 if there is not enough memory for the frame buffer.
  */
 char TVout_ve_plus::begin(uint8_t mode, uint8_t x, uint8_t y) {
-  // check if x is divisable by 8
+  // check if x is divisable by 8 (to ensure each part of screen fits into a byte)
   if ( !(x & 0xF8))
+    // If it doesn't return now with an error code.
     return 1;
   x = x/8;
 
+  // Set up `screen` to be the frame buffer by malloc'ing memory for the size of the screen.
+  //TODO: Note where `screen` is declared??
   screen = (unsigned char*)malloc(x * y * sizeof(unsigned char));
+  // If there's not enough memory for the frame buffer, return now with an error code.
   if (screen == NULL)
     return 4;
 
+  // Initialize cursor to start of screen.
   cursor_x = 0;
   cursor_y = 0;
 
+  // Setup the rendering.
+  // (Function definition is in: video_gen.cpp)
   render_setup(mode,x,y,screen);
+
+  // Clear the screen to black.
+  // clear_screen() is a macro that just does `fill(0)`
+  // (Macro definition is in: TVout_ve_plus.h)
+  // (Function definition is in: TVout_ve_plus.cpp)
   clear_screen();
+
   return 0;
 } // end of begin
 
@@ -104,6 +117,7 @@ void TVout_ve_plus::end() {
  *    The color to fill the screen with.
  *    (see color note at the top of this file)
 */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::fill(uint8_t color) {
   switch(color) {
     case BLACK:
@@ -131,6 +145,7 @@ void TVout_ve_plus::fill(uint8_t color) {
  * Returns:
  *  The horizonal resolution.
 */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 unsigned char TVout_ve_plus::hres() {
   return display.hres*8;
 } // end of hres
@@ -141,6 +156,7 @@ unsigned char TVout_ve_plus::hres() {
  * Returns:
  *  The vertical resolution
 */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 unsigned char TVout_ve_plus::vres() {
   return display.vres;
 } // end of vres
@@ -152,6 +168,7 @@ unsigned char TVout_ve_plus::vres() {
  *  The number of characters that will fit on a text line starting from x=0.
  *  Will return -1 for dynamic width fonts as this cannot be determined.
 */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 char TVout_ve_plus::char_line() {
   return ((display.hres*8)/pgm_read_byte(font));
 } // end of char_line
@@ -177,6 +194,7 @@ void TVout_ve_plus::delay(unsigned int x) {
  *  x:
  *    The number of frames to delay for.
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::delay_frame(unsigned int x) {
   int stop_line = (int)(display.start_render + (display.vres*(display.vscale_const+1)))+1;
   while (x) {
@@ -193,6 +211,7 @@ void TVout_ve_plus::delay_frame(unsigned int x) {
  * Returns:
  *  The time in ms since video generation has started.
 */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 unsigned long TVout_ve_plus::millis() {
   if (display.lines_frame == _NTSC_LINE_FRAME) {
     return display.frames * _NTSC_TIME_SCANLINE * _NTSC_LINE_FRAME / 1000;
@@ -209,6 +228,7 @@ unsigned long TVout_ve_plus::millis() {
  *  sfactor:
  *    The scale number of times to repeate each line.
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::force_vscale(char sfactor) {
   delay_frame(1);
   display.vscale_const = sfactor - 1;
@@ -222,6 +242,7 @@ void TVout_ve_plus::force_vscale(char sfactor) {
  *  time:
  *    The new output start time in micro seconds.
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::force_outstart(uint8_t time) {
   delay_frame(1);
   display.output_delay = ((time * _CYCLES_PER_US) - 1);
@@ -234,6 +255,7 @@ void TVout_ve_plus::force_outstart(uint8_t time) {
  *  line:
  *    The new active video output start line
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::force_linestart(uint8_t line) {
   delay_frame(1);
   display.start_render = line;
@@ -251,6 +273,7 @@ void TVout_ve_plus::force_linestart(uint8_t line) {
  *    The color of the pixel
  *    (see color note at the top of this file)
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::set_pixel(uint8_t x, uint8_t y, char c) {
   if (x >= display.hres*8 || y >= display.vres)
     return;
@@ -272,6 +295,7 @@ void TVout_ve_plus::set_pixel(uint8_t x, uint8_t y, char c) {
  *
  * Thank you gijs on the arduino.cc forum for the non obviouse fix.
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 unsigned char TVout_ve_plus::get_pixel(uint8_t x, uint8_t y) {
   if (x >= display.hres*8 || y >= display.vres)
     return 0;
@@ -296,6 +320,7 @@ unsigned char TVout_ve_plus::get_pixel(uint8_t x, uint8_t y) {
  *    The color of the line.
  *    (see color note at the top of this file)
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, char c) {
 
   if (x0 > display.hres*8 || y0 > display.vres || x1 > display.hres*8 || y1 > display.vres)
@@ -382,6 +407,7 @@ void TVout_ve_plus::draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, ch
  *    the color of the fill.
  *    (see color note at the top of this file)
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::draw_row(uint8_t line, uint16_t x0, uint16_t x1, uint8_t c) {
   uint8_t lbit, rbit;
 
@@ -436,6 +462,7 @@ void TVout_ve_plus::draw_row(uint8_t line, uint16_t x0, uint16_t x1, uint8_t c) 
  *    the color of the fill.
  *    (see color note at the top of this file)
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::draw_column(uint8_t row, uint16_t y0, uint16_t y1, uint8_t c) {
 
   unsigned char bit;
@@ -534,7 +561,6 @@ void TVout_ve_plus::draw_circle(uint8_t x0, uint8_t y0, uint8_t radius, char c, 
   int y = radius;
   uint8_t pyy = y,pyx = x;
 
-
   //there is a fill color
   if (fc != -1)
     draw_row(y0,x0-radius,x0+radius,fc);
@@ -599,6 +625,7 @@ void TVout_ve_plus::draw_circle(uint8_t x0, uint8_t y0, uint8_t radius, char c, 
  *    Override the bitmap height. This is mainly used for fonts.
  *    default = 0 (do not override)
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::bitmap(uint8_t x, uint8_t y, const unsigned char * bmp,
     uint16_t i, uint8_t width, uint8_t lines) {
 
@@ -664,6 +691,7 @@ void TVout_ve_plus::bitmap(uint8_t x, uint8_t y, const unsigned char * bmp,
  *    LEFT  = 2
  *    RIGHT = 3
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::shift(uint8_t distance, uint8_t direction) {
   uint8_t * src;
   uint8_t * dst;
@@ -746,6 +774,7 @@ void TVout_ve_plus::shift(uint8_t distance, uint8_t direction) {
 /* Inline version of set_pixel that does not perform a bounds check
  * This function will be replaced by a macro.
  */
+// (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 static void inline sp(uint8_t x, uint8_t y, char c) {
   if (c==1)
     display.screen[(x/8) + (y*display.hres)] |= 0x80 >> (x&7);
@@ -820,6 +849,8 @@ void TVout_ve_plus::tone(unsigned int frequency, unsigned long duration_ms) {
   uint32_t ocr = 0;
 
 
+  // DDR_SND and SND_PIN are defined in hardware_setup.h which is included at
+  // the top of video_gen.cpp.
   DDR_SND |= _BV(SND_PIN); //set pb3 (digital pin 11) to output
 
   //we are using an 8 bit timer, scan through prescalars to find the best fit
@@ -867,22 +898,37 @@ void TVout_ve_plus::tone(unsigned int frequency, unsigned long duration_ms) {
   TCCR2A |= _BV(COM2A0);
 } // end of tone
 
+
 /* Stops tone generation
 */
 void TVout_ve_plus::noTone() {
   TCCR2B = 0;
+  // PORT_SND and SND_PIN are defined in hardware_setup.h which is included at
+  // the top of video_gen.cpp.
   PORT_SND &= ~(_BV(SND_PIN)); //set pin 11 to 0
 } // end of noTone
 
+
+/*
+ *
+ */
 void TVout_ve_plus::capture() {
   captureFlag = 1;
   while (captureFlag > 0);
 }
 
+
+/*
+ *
+ */
 void TVout_ve_plus::resume() {
   resume_render();
 }
 
+
+/*
+ *
+ */
 void TVout_ve_plus::setDataCapture(int line, int wait, uint8_t *buf) {
   dataCaptureLine = line;
   dataCaptureWait = wait;

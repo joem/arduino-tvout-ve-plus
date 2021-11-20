@@ -52,19 +52,33 @@ uint8_t *dataCaptureBuf = 0;
 // sound properties
 volatile long remainingToneVsyncs;
 
+/*
+ *
+ */
 void resume_render() {
   render_line = save_render_line;
 }
 
+/*
+ * Used when something needs to point to an empty function
+ */
 void empty() {}
 
+/* Set up the rendering. //TODO: Better description!
+ *
+ */
 void render_setup(uint8_t mode, uint8_t x, uint8_t y, uint8_t *scrnptr) {
 
+  // `display` is TVout_ve_plus struct declared at the top of this file (video_gen.cpp)
+  // Make display point to the same memory as the passed scrnptr
   display.screen = scrnptr;
+  // Set some attributes of display. //TODO: Find out if `attributes` is the right word.
   display.hres = x;
   display.vres = y;
   display.frames = 0;
 
+  // Set display.vscale_const appropriately based on mode
+  // (using _PAL_LINE_DISPLAY or _NTSC_LINE_DISPLAY -- both defined in video_properties.h)
   if (mode)
     display.vscale_const = _PAL_LINE_DISPLAY/display.vres - 1;
   else
@@ -73,7 +87,7 @@ void render_setup(uint8_t mode, uint8_t x, uint8_t y, uint8_t *scrnptr) {
 
   //selects the widest render method that fits in 46us
   //as of 9/16/10 rendermode 3 will not work for resolutions lower than
-  //192(display.hres lower than 24)
+  //192 (display.hres lower than 24)
   unsigned char rmethod = (_TIME_ACTIVE*_CYCLES_PER_US)/(display.hres*8);
   switch(rmethod) {
     case 6:
@@ -97,17 +111,26 @@ void render_setup(uint8_t mode, uint8_t x, uint8_t y, uint8_t *scrnptr) {
         render_line = &render_line3c;
   }
 
+  // DDR_VID, VID_PIN, DDR_SYNC, SYNC_PIN, PORT_VID, PORT_SYNC, DDR_SND, and
+  // SND_PIN are all defined in hardware_setup.h which is included at the top
+  // of this file (video_gen.cpp).
 
+  // Set the data direction for the video pin and sync pin
   DDR_VID |= _BV(VID_PIN);
   DDR_SYNC |= _BV(SYNC_PIN);
+  // ???? //FIXME
   PORT_VID &= ~_BV(VID_PIN);
   PORT_SYNC |= _BV(SYNC_PIN);
+  // Set the data direction for the sound pin
   DDR_SND |= _BV(SND_PIN);    // for tone generation.
 
   // inverted fast pwm mode on timer 1
   TCCR1A = _BV(COM1A1) | _BV(COM1A0) | _BV(WGM11);
   TCCR1B = _BV(WGM13) | _BV(WGM12) | _BV(CS10);
 
+  // Set mode-specific attributes of display and set mode-specific registers
+  // (OCR1A is one of the output compare registers.)
+  // (ICR1 is the input capture register.)
   if (mode) {
     display.start_render = _PAL_LINE_MID - ((display.vres * (display.vscale_const+1))/2);
     display.output_delay = _PAL_CYCLES_OUTPUT_START;
@@ -136,6 +159,9 @@ ISR(TIMER1_OVF_vect) {
   line_handler();
 }
 
+/*
+ *
+ */
 void blank_line() {
 
   if ( display.scanLine == display.start_render) {
@@ -169,6 +195,9 @@ void blank_line() {
   display.scanLine++;
 }
 
+/*
+ *
+ */
 void active_line() {
   wait_until(display.output_delay);
   render_line();
@@ -185,6 +214,9 @@ void active_line() {
   display.scanLine++;
 }
 
+/*
+ *
+ */
 void vsync_line() {
   if (display.scanLine >= display.lines_frame) {
     OCR1A = _CYCLES_VIRT_SYNC;
@@ -213,6 +245,9 @@ void vsync_line() {
 }
 
 
+/*
+ *
+ */
 static void inline wait_until(uint8_t time) {
   __asm__ __volatile__ (
       "subi	%[time], 10\n"
@@ -234,6 +269,9 @@ static void inline wait_until(uint8_t time) {
   );
 }
 
+/*
+ *
+ */
 void render_line6c() {
   #ifndef REMOVE6C
   __asm__ __volatile__ (
@@ -312,6 +350,9 @@ void render_line6c() {
   #endif
 }
 
+/*
+ *
+ */
 void render_line5c() {
   #ifndef REMOVE5C
   __asm__ __volatile__ (
@@ -381,6 +422,9 @@ void render_line5c() {
   #endif
 }
 
+/*
+ *
+ */
 void render_line4c() {
   #ifndef REMOVE4C
   __asm__ __volatile__ (
@@ -437,6 +481,9 @@ void render_line4c() {
   #endif
 }
 
+/*
+ *
+ */
 // only 16mhz right now!!!
 void render_line3c() {
   #ifndef REMOVE3C
@@ -553,6 +600,9 @@ ISR(TIMER1_CAPT_vect) {
   line_handler();
 }
 
+/*
+ *
+ */
 // Render a line based on the analog comparator output instead of display memory
 void renderACO_line5c() {
   __asm__ __volatile__ (
@@ -622,6 +672,9 @@ void renderACO_line5c() {
   );
 }
 
+/*
+ *
+ */
 // Capture a line using the analog comparator output and store the data in the display memory
 void capture_line5c() {
   __asm__ __volatile__ (
@@ -682,6 +735,9 @@ void capture_line5c() {
   );
 }
 
+/*
+ *
+ */
 // Capture a line using the analog comparator output and store the data in
 // the data capture buffer
 void dataCapture_line5c() {
