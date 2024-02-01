@@ -185,26 +185,41 @@ void TVout_ve_plus::print_row(const char str[], uint8_t row, uint8_t lines)
   write_row(str, row, lines);
 }
 
+/* Print the given char, using the optional given base.
+ * Default base is BYTE (0).
+ */
 void TVout_ve_plus::print(char c, int base)
 {
   print((long) c, base);
 }
 
+/* Print the given unsigned char, using the optional given base.
+ * Default base is BYTE (0).
+ */
 void TVout_ve_plus::print(unsigned char b, int base)
 {
   print((unsigned long) b, base);
 }
 
+/* Print the given int, using the optional given base.
+ * Default base is DEC (10).
+ */
 void TVout_ve_plus::print(int n, int base)
 {
   print((long) n, base);
 }
 
+/* Print the given unsigned int, using the optional given base.
+ * Default base is DEC (10).
+ */
 void TVout_ve_plus::print(unsigned int n, int base)
 {
   print((unsigned long) n, base);
 }
 
+/* Print the given long, using the optional given base.
+ * Default base is DEC (10).
+ */
 void TVout_ve_plus::print(long n, int base)
 {
   if (base == 0) {
@@ -220,12 +235,18 @@ void TVout_ve_plus::print(long n, int base)
   }
 }
 
+/* Print the given unsigned long, using the optional given base.
+ * Default base is DEC (10).
+ */
 void TVout_ve_plus::print(unsigned long n, int base)
 {
   if (base == 0) write(n);
   else printNumber(n, base);
 }
 
+/* Print the given double, using the optional given base.
+ * Default base is 2.
+ */
 void TVout_ve_plus::print(double n, int digits)
 {
   printFloat(n, digits);
@@ -314,47 +335,81 @@ void TVout_ve_plus::printPGM(uint8_t x, uint8_t y, const char str[]) {
   }
 }
 
+/* Set the new cursor position.
+ *
+ */
 void TVout_ve_plus::set_cursor(uint8_t x, uint8_t y) {
   cursor_x = x;
   cursor_y = y;
 }
 
+/* Print the given char array, starting at the given cursor coordinates (x,y).
+ *
+ */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, const char str[]) {
   cursor_x = x;
   cursor_y = y;
   write(str);
 
 }
+/* Print the given char, at the given cursor coordinates (x,y), in the optional given base.
+ * Default base is BYTE (0).
+ *
+ */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, char c, int base) {
   cursor_x = x;
   cursor_y = y;
   print((long) c, base);
 }
+/* Print the given unsigned char, at the given cursor coordinates (x,y), in the optional given base.
+ * Default base is BYTE (0).
+ *
+ */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, unsigned char b, int base) {
   cursor_x = x;
   cursor_y = y;
   print((unsigned long) b, base);
 }
+/* Print the given int, at the given cursor coordinates (x,y), in the optional given base.
+ * Default base is DEC (10).
+ *
+ */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, int n, int base) {
   cursor_x = x;
   cursor_y = y;
   print((long) n, base);
 }
+/* Print the given unsigned int, at the given cursor coordinates (x,y), in the optional given base.
+ * Default base is DEC (10).
+ *
+ */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, unsigned int n, int base) {
   cursor_x = x;
   cursor_y = y;
   print((unsigned long) n, base);
 }
+/* Print the given long, at the given cursor coordinates (x,y), in the optional given base.
+ * Default base is DEC (10).
+ *
+ */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, long n, int base) {
   cursor_x = x;
   cursor_y = y;
   print(n,base);
 }
+/* Print the given unsigned long, at the given cursor coordinates (x,y), in the optional given base.
+ * Default base is DEC (10).
+ *
+ */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, unsigned long n, int base) {
   cursor_x = x;
   cursor_y = y;
   print(n,base);
 }
+/* Print the given double, at the given cursor coordinates (x,y), in the optional given base.
+ * Default base is 2.
+ *
+ */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, double n, int digits) {
   cursor_x = x;
   cursor_y = y;

@@ -35,7 +35,7 @@
 #include "TVout_ve_plus.h"
 
 
-/* Call this to start video output with the default resolution.
+/* Start video output with the default resolution.
  *
  * Arguments:
  *  mode:
@@ -52,7 +52,7 @@ char TVout_ve_plus::begin(uint8_t mode) {
 } // end of begin
 
 
-/* call this to start video output with a specified resolution.
+/* Start video output with a specified resolution.
  *
  * Arguments:
  *  mode:
@@ -140,7 +140,7 @@ void TVout_ve_plus::fill(uint8_t color) {
 } // end of fill
 
 
-/* Gets the Horizontal resolution of the screen
+/* Return the Horizontal resolution of the screen
  *
  * Returns:
  *  The horizonal resolution.
@@ -151,7 +151,7 @@ unsigned char TVout_ve_plus::hres() {
 } // end of hres
 
 
-/* Gets the Vertical resolution of the screen
+/* Return the Vertical resolution of the screen
  *
  * Returns:
  *  The vertical resolution
@@ -175,7 +175,7 @@ char TVout_ve_plus::char_line() {
 
 
 /* delay for x ms
- * The resolution is 16ms for NTSC and 20ms for PAL
+ * The accuracy is 16ms for NTSC and 20ms for PAL
  *
  * Arguments:
  *  x:
@@ -305,7 +305,7 @@ unsigned char TVout_ve_plus::get_pixel(uint8_t x, uint8_t y) {
 } // end of get_pixel
 
 
-/* Draw a line from one point to another
+/* Draw a line from point 0 to point 1
  *
  * Arguments:
  *  x0:
@@ -449,7 +449,8 @@ void TVout_ve_plus::draw_row(uint8_t line, uint16_t x0, uint16_t x1, uint8_t c) 
 } // end of draw_row
 
 
-/* Fill a column from one point to another
+/* Fill a column with the specified color from one y0 to y1.
+ * This function draws only vertical lines and does it very fast.
  *
  * Argument:
  *  row:
@@ -503,7 +504,8 @@ void TVout_ve_plus::draw_column(uint8_t row, uint16_t y0, uint16_t y1, uint8_t c
 }
 
 
-/* draw a rectangle at x,y with a specified width and height
+/* Draw a rectangle at with its upper left corner at the given point (x,y) with the given width and height.
+ * The rectangle may be optionally filled if a fill color is passed given.
  *
  * Arguments:
  *  x0:
@@ -678,8 +680,9 @@ void TVout_ve_plus::bitmap(uint8_t x, uint8_t y, const unsigned char * bmp,
 } // end of bitmap
 
 
-/* shift the pixel buffer in any direction
+/* shift the pixel buffer in any direction.
  * This function will shift the screen in a direction by any distance.
+ * Note: Anything moved off screen doesn't loop around, it's just gone.
  *
  * Arguments:
  *  distance:
@@ -900,7 +903,9 @@ void TVout_ve_plus::tone(unsigned int frequency, unsigned long duration_ms) {
 
 
 /* Stops tone generation
-*/
+ * When this function is called any tone currently being played will be stopped
+ * regardless of the amount of time it has left.
+ */
 void TVout_ve_plus::noTone() {
   TCCR2B = 0;
   // PORT_SND and SND_PIN are defined in hardware_setup.h which is included at
