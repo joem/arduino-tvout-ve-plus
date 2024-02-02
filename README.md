@@ -42,6 +42,15 @@ To use any of the printing functions `select_font(font)` must be called with one
 To see a list of the included fonts or for instructions on how to create fonts, see the Fonts section.
 
 
+
+When using a locationally aware print function ie print(10,10,"Hello World) the cursor will be left at the end of the print call. So to print the string "My double=" at (10,10) the following can be done: tv.print(10,10,"My double="); tv.print(somedouble); Assuming that tv is the instantiated TVout object.
+
+
+## Bitmaps
+
+
+
+
 ## Fonts
 
 The included fonts are:
@@ -221,6 +230,132 @@ void end();
 
 - static void inline sp(unsigned char x, unsigned char y, char c); 
 
+
+
+---
+# temp place for misc notes to work in above somewhere
+
+setup:
+
+begin(mode) Start Outputting at the default resolution of 128x96.
+begin(mode,x,y) Start Outputting at a specified resolution.
+end() Clean up the video data and disable interrupts.
+force_vscale(sfactor) Force the number of times to display each line.
+force_outstart(time) Force the time to start outputting on an active line.
+force_linestart(line) Force line to start outputting on.
+set_vbi_hook(func) Set the function to be called once per vertical blanking period.
+set_hbi_hook(func) Set the function to be called once per horizontal blanking period.
+
+
+flow control:
+
+delay(ms) Delay a given time in ms.
+delay_frame(frames) Delay a given number of frames.
+
+
+accessors:
+
+hres() Get the Horizontal Resolution.
+vres() Get the Vertical Resolution.
+char_line() Get the number of characters that will fit on a text line.
+
+
+Basic GFX:
+
+set_pixel(x,y,color) Set a pixel.
+get_pixel(x,y) Get a pixel.
+fill(color) Fill the screen with a color.
+clear_screen() Clear the screen.
+invert() Invert the data on the screen.
+shift(distance,direction) Shift the screen a specified distance in any direction.
+draw_line(x0,y0,x1,y1,color) Draw a line from (x0,y0) to (x1,y1).
+draw_row(row,x0,x1,color) Fill the given row from x0 to x1 with the given color.
+draw_column(column,y0,y1,color) Fill the given column from y0 to y1 with the given color.
+draw_rect(x,y,w,h,color,fillcolor) Draw a rectangle at (x,y) by dimensions (h,w), and fill with the given color.
+draw_rect(x,y,w,h,color) Draw a rectangle at (x,y) by dimensions (h,w).
+draw_circle(x,y,radius,color,fillcolor) Draw a Circle at (x,y) with the given radius, and fill with the given.
+draw_circle(x,y,radius,color) Draw a Circle at (x,y) with the given radius.
+bitmap(x,y,bmp,i,width,height) Place a bitmap at (x,y).
+
+
+text:
+
+print_char(x,y,c) Print a character at (x,y).
+set_cursor(x,y) Set the position that the next character will be printed at.
+select_font(font) Select the font to print.
+print() Print a string.
+println() Print a line.
+printPGM() Print a string from program memory.
+
+To use any of the printing functions select_font(font) must be called with one of the following included fonts or a custom user font set. * font4x6 * font6x8 * font8x8 * font8x8ext To create a custom font see the Fonts for instructions on how to create fonts.
+
+When using a locationally aware print function ie print(10,10,"Hello World) the cursor will be left at the end of the print call. So to print the string "My double=" at (10,10) the following can be done: tv.print(10,10,"My double="); tv.print(somedouble); Assuming that tv is the instantiated TVout object.
+
+
+audio:
+
+tone(frequency) Start outputting a tone.
+tone(frequency,duration) Start outputting a tone for a duration in ms.
+noTone() Stop all tones.
+
+
+
+
+
+
+
+The complete list of functions not broken down into sections.
+
+begin(mode) Start Outputting at the default resolution of 128x96.
+begin(mode,x,y) Start Outputting at a specified resolution.
+end() Clean up the video data and disable interrupts.
+force_vscale(sfactor) Force the number of times to display each line.
+force_outstart(time) Force the time to start outputting on an active line.
+force_linestart(line) Force line to start outputting on.
+set_vbi_hook(func) Set the function to be called once per vertical blanking period.
+set_hbi_hook(func) Set the function to be called once per horizontal blanking period.
+hres() Get the Horizontal Resolution.
+vres() Get the Vertical Resolution.
+char_line() Get the number of characters that will fit on a text line.
+set_pixel(x,y,color) Set a pixel.
+get_pixel(x,y) Get a pixel.
+fill(color) Fill the screen with a color.
+clear_screen() Clear the screen.
+invert() Invert the data on the screen.
+shift(distance,direction) Shift the screen a specified distance in any direction.
+draw_line(x0,y0,x1,y1,color) Draw a line from (x0,y0) to (x1,y1).
+draw_row(row,x0,x1,color) Fill the given row from x0 to x1 with the given color.
+draw_column(column,y0,y1,color) Fill the given column from y0 to y1 with the given color.
+draw_rect(x,y,w,h,color,fillcolor) Draw a rectangle at (x,y) by dimensions (h,w), and fill with the given color.
+draw_rect(x,y,w,h,color) Draw a rectangle at (x,y) by dimensions (h,w).
+draw_circle(x,y,radius,color,fillcolor) Draw a Circle at (x,y) with the given radius, and fill with the given.
+draw_circle(x,y,radius,color) Draw a Circle at (x,y) with the given radius.
+bitmap(x,y,bmp,i,width,height) Place a bitmap at (x,y).
+print_char(x,y,c) Print a character at (x,y).
+set_cursor(x,y) Set the position that the next character will be printed at.
+select_font(font) Select the font to print.
+print() Print a string.
+println() Print a line.
+printPGM() Print a string from program memory.
+tone(frequency) Start outputting a tone.
+tone(frequency,duration) Start outputting a tone for a duration in ms.
+noTone() Stop all tones.
+
+
+
+
+
+
+
+
+
+
+Setup Functions
+Flow Control Functions
+Accessor Functions
+Basic Graphics Functions
+Text Handling Functions
+Audio Handling Functions
 
 
 
