@@ -252,18 +252,6 @@ void TVout_ve_plus::print(double n, int digits)
   printFloat(n, digits);
 }
 
-void TVout_ve_plus::println(void)
-{
-  print('\r');
-  print('\n');
-}
-
-void TVout_ve_plus::println(const char c[])
-{
-  print(c);
-  println();
-}
-
 /*
  *TODO: Document this function.
  *
@@ -275,42 +263,81 @@ void TVout_ve_plus::println_row(const char c[], uint8_t row, uint8_t lines)
   println();                  //FIXME: Might need to do something about this?
 }
 
+/* Return cursor to first column and move it to the next line.
+ *
+ */
+void TVout_ve_plus::println(void)
+{
+  print('\r');
+  print('\n');
+}
+
+/* Print the char array, return cursor to first column, and move cursor to next line.
+ *
+ */
+void TVout_ve_plus::println(const char c[])
+{
+  print(c);
+  println();
+}
+
+/* Print the char, return cursor to first column, and move cursor to next line.
+ * Setting the base that's used is optional. The default if not specified is BYTE (0).
+ */
 void TVout_ve_plus::println(char c, int base)
 {
   print(c, base);
   println();
 }
 
+/* Print the unsigned char, return cursor to first column, and move cursor to next line.
+ * Setting the base that's used is optional. The default if not specified is BYTE (0).
+ */
 void TVout_ve_plus::println(unsigned char b, int base)
 {
   print(b, base);
   println();
 }
 
+/* Print the int, return cursor to first column, and move cursor to next line.
+ * Setting the base that's used is optional. The default if not specified is DEC (10).
+ */
 void TVout_ve_plus::println(int n, int base)
 {
   print(n, base);
   println();
 }
 
+/* Print the unsigned int, return cursor to first column, and move cursor to next line.
+ * Setting the base that's used is optional. The default if not specified is DEC (10).
+ */
 void TVout_ve_plus::println(unsigned int n, int base)
 {
   print(n, base);
   println();
 }
 
+/* Print the long, return cursor to first column, and move cursor to next line.
+ * Setting the base that's used is optional. The default if not specified is DEC (10).
+ */
 void TVout_ve_plus::println(long n, int base)
 {
   print(n, base);
   println();
 }
 
+/* Print the unsigned long, return cursor to first column, and move cursor to next line.
+ * Setting the base that's used is optional. The default if not specified is DEC (10).
+ */
 void TVout_ve_plus::println(unsigned long n, int base)
 {
   print(n, base);
   println();
 }
 
+/* Print the double, return cursor to first column, and move cursor to next line.
+ * Setting the base that's used is optional. The default if not specified is 2.
+ */
 void TVout_ve_plus::println(double n, int digits)
 {
   print(n, digits);
@@ -428,6 +455,9 @@ void TVout_ve_plus::print_row(uint8_t x, uint8_t y, const char str[], uint8_t ro
 
 }
 
+/* Move the cursor, print the char array, then newline and carriage return the cursor.
+ *
+ */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, const char c[])
 {
   cursor_x = x;
@@ -436,6 +466,9 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, const char c[])
   println();
 }
 
+/* Move the cursor, print the char, then newline and carriage return the cursor.
+ * Setting the base that's used is optional. The default if not specified is BYTE (0).
+ */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, char c, int base)
 {
   cursor_x = x;
@@ -444,6 +477,9 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, char c, int base)
   println();
 }
 
+/* Move the cursor, print the unsigned char, then newline and carriage return the cursor.
+ * Setting the base that's used is optional. The default if not specified is BYTE (0).
+ */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned char b, int base)
 {
   cursor_x = x;
@@ -452,6 +488,9 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned char b, int base)
   println();
 }
 
+/* Move the cursor, print the int, then newline and carriage return the cursor.
+ * Setting the base that's used is optional. The default if not specified is DEC (10).
+ */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, int n, int base)
 {
   cursor_x = x;
@@ -460,6 +499,9 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, int n, int base)
   println();
 }
 
+/* Move the cursor, print the unsigned int, then newline and carriage return the cursor.
+ * Setting the base that's used is optional. The default if not specified is DEC (10).
+ */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned int n, int base)
 {
   cursor_x = x;
@@ -468,6 +510,9 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned int n, int base)
   println();
 }
 
+/* Move the cursor, print the long, then newline and carriage return the cursor.
+ * Setting the base that's used is optional. The default if not specified is DEC (10).
+ */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, long n, int base)
 {
   cursor_x = x;
@@ -476,6 +521,9 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, long n, int base)
   println();
 }
 
+/* Move the cursor, print the unsigned long, then newline and carriage return the cursor.
+ * Setting the base that's used is optional. The default if not specified is DEC (10).
+ */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned long n, int base)
 {
   cursor_x = x;
@@ -484,6 +532,9 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned long n, int base)
   println();
 }
 
+/* Move the cursor, print the double, then newline and carriage return the cursor.
+ * Setting the base that's used is optional. The default if not specified is 2.
+ */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, double n, int digits)
 {
   cursor_x = x;

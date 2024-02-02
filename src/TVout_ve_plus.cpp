@@ -519,7 +519,7 @@ void TVout_ve_plus::draw_column(uint8_t row, uint16_t y0, uint16_t y1, uint8_t c
  *  c:
  *    The color of the rectangle.
  *    (see color note at the top of this file)
- *  fc:
+ *  fc (optional):
  *    The fill color of the rectangle.
  *    (see color note at the top of this file)
  *    default =-1 (no fill)
@@ -549,7 +549,7 @@ void TVout_ve_plus::draw_rect(uint8_t x0, uint8_t y0, uint8_t w, uint8_t h, char
  *  c:
  *    The color of the circle.
  *    (see color note at the top of this file)
- *  fc:
+ *  fc (optional):
  *    The color to fill the circle.
  *    (see color note at the top of this file)
  *    defualt  =-1 (do not fill)
@@ -619,13 +619,13 @@ void TVout_ve_plus::draw_circle(uint8_t x0, uint8_t y0, uint8_t radius, char c, 
  *    The bitmap data to print.
  *  i:
  *    The offset into the image data to start at.  This is mainly used for fonts.
- *    default = 0
+ *    (optional, default = 0)
  *  width:
  *    Override the bitmap width. This is mainly used for fonts.
- *    default =0 (do not override)
+ *    (optional, default = 0 (do not override))
  *  height:
  *    Override the bitmap height. This is mainly used for fonts.
- *    default = 0 (do not override)
+ *    (optional, default = 0 (do not override))
  */
 // (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::bitmap(uint8_t x, uint8_t y, const unsigned char * bmp,
