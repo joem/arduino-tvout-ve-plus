@@ -110,12 +110,15 @@ void TVout_ve_plus::end() {
 }
 
 
-/* Fill the screen with some color.
+/* Fill the screen with the specified color.
  *
  * Arguments:
  *  color:
  *    The color to fill the screen with.
  *    (see color note at the top of this file)
+ *
+ * Note: clear_screen() and invert() both direct here as they are macros that
+ * make the calls fill(0) and fill(2) respectively.
 */
 // (video_gen.cpp declares the TVout_ve_plus struct called `display`)
 void TVout_ve_plus::fill(uint8_t color) {

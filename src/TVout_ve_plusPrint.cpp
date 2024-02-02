@@ -344,6 +344,12 @@ void TVout_ve_plus::println(double n, int digits)
   println();
 }
 
+/* Print a string directly from the flash memory.
+ * This can be done and should be done when printing a constant string and
+ * memory is low. A string may be placed into the flash space by using this
+ * function PSTR(string) for instance: printPGM(PSTR("Hello World"))
+ *
+ */
 void TVout_ve_plus::printPGM(const char str[]) {
   char c;
   while ((c = pgm_read_byte(str))) {
@@ -352,6 +358,12 @@ void TVout_ve_plus::printPGM(const char str[]) {
   }
 }
 
+/* Print a string directly from the flash memory, to specified point on screen.
+ * This can be done and should be done when printing a constant string and
+ * memory is low. A string may be placed into the flash space by using this
+ * function PSTR(string) for instance: printPGM(PSTR("Hello World"))
+ *
+ */
 void TVout_ve_plus::printPGM(uint8_t x, uint8_t y, const char str[]) {
   char c;
   cursor_x = x;
@@ -433,8 +445,8 @@ void TVout_ve_plus::print(uint8_t x, uint8_t y, unsigned long n, int base) {
   cursor_y = y;
   print(n,base);
 }
-/* Print the given double, at the given cursor coordinates (x,y), in the optional given base.
- * Default base is 2.
+/* Print the given double, at the given cursor coordinates (x,y), with the optional precision.
+ * Default precision is 2.
  *
  */
 void TVout_ve_plus::print(uint8_t x, uint8_t y, double n, int digits) {
@@ -533,7 +545,7 @@ void TVout_ve_plus::println(uint8_t x, uint8_t y, unsigned long n, int base)
 }
 
 /* Move the cursor, print the double, then newline and carriage return the cursor.
- * Setting the base that's used is optional. The default if not specified is 2.
+ * Setting the precision that's used is optional. The default if not specified is 2.
  */
 void TVout_ve_plus::println(uint8_t x, uint8_t y, double n, int digits)
 {
