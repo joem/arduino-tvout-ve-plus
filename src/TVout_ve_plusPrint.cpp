@@ -24,6 +24,11 @@ Modified 23 November 2006 by David A. Mellis
 
 #include "TVout_ve_plus.h"
 
+/* Select the font to print with.
+ *
+ * Note: This is required to be called sometime before using any of the print functions.
+ *
+ */
 void TVout_ve_plus::select_font(const unsigned char * f) {
   font = f;
 }

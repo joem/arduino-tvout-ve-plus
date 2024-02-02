@@ -35,7 +35,7 @@
 #include "TVout_ve_plus.h"
 
 
-/* Start video output with the default resolution.
+/* Start generating a video signal using the specified standard at the default resolution of 128x96.
  *
  * Arguments:
  *  mode:
@@ -52,7 +52,7 @@ char TVout_ve_plus::begin(uint8_t mode) {
 } // end of begin
 
 
-/* Start video output with a specified resolution.
+/* Start generating a video signal using the specified standard at a specified resolution.
  *
  * Arguments:
  *  mode:
@@ -191,7 +191,9 @@ void TVout_ve_plus::delay(unsigned int x) {
 
 
 /* Delay for x frames, exits at the end of the last display line.
- * delay_frame(1) is useful prior to drawing so there is little/no flicker.
+ * Since this function always exits at the end of the active video section
+ * delay_frame(1) is useful for minimizing or eliminating on screen flicker
+ * caused by updating the display.
  *
  * Arguments:
  *  x:
@@ -225,7 +227,11 @@ unsigned long TVout_ve_plus::millis() {
 } // end of millis
 
 
-/* force the number of times to display each line.
+/* Override the automatically chosen vertical scale.
+ *
+ * Choosing a lower vertical scale will allow the program more time to execute
+ * at the expense of filling the screen. Be warned though choosing too large a
+ * value will break the output.
  *
  * Arguments:
  *  sfactor:
@@ -239,7 +245,11 @@ void TVout_ve_plus::force_vscale(char sfactor) {
 }
 
 
-/* force the output start time of a scanline in micro seconds.
+/* Force the output start time of a scanline in micro seconds.
+ *
+ * This function takes the time to start outputting video data in micro
+ * seconds. If used a choice should be made that will not cause the current
+ * line to run over onto the next lines time.
  *
  * Arguments:
  *  time:
@@ -252,7 +262,10 @@ void TVout_ve_plus::force_outstart(uint8_t time) {
 }
 
 
-/* force the start line for active video
+/* Override the automatically chosen line to start outputting on.
+ *
+ * A line must be chosen that will not cause the last active line to break into
+ * the vertical sync lines.
  *
  * Arguments:
  *  line:
@@ -265,7 +278,7 @@ void TVout_ve_plus::force_linestart(uint8_t line) {
 }
 
 
-/* Set the color of a pixel
+/* Set the color of a pixel at (x,y)
  *
  * Arguments:
  *  x:
@@ -397,7 +410,10 @@ void TVout_ve_plus::draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, ch
 } // end of draw_line
 
 
-/* Fill a row from one point to another
+/* Fill a row with the specified color from one x0 to x1.
+ *
+ * This function draws only horizontal lines and does it very fast, it is best
+ * for filling primitive shapes with any color.
  *
  * Argument:
  *  line:
@@ -540,7 +556,7 @@ void TVout_ve_plus::draw_rect(uint8_t x0, uint8_t y0, uint8_t w, uint8_t h, char
 } // end of draw_rect
 
 
-/* draw a circle given a coordinate x,y and radius both filled and non filled.
+/* Draw a circle given a coordinate x,y and radius, either filled or non filled.
  *
  * Arguments:
  *  x0:
@@ -803,12 +819,13 @@ void TVout_ve_plus::set_vbi_hook(void (*func)()) {
 } // end of set_vbi_hook
 
 
-/* set the horizonal blank function call
+/* Set the horizonal blank function call.
  * This function passed to this function will be called one per scan line.
+ * This function must take no parameters and have a void return type.
  * The function MUST be VERY FAST(~2us max).
  *
  * Arguments:
- *  funct:
+ *  func:
  *    The function to call.
  */
 void TVout_ve_plus::set_hbi_hook(void (*func)()) {
@@ -816,7 +833,7 @@ void TVout_ve_plus::set_hbi_hook(void (*func)()) {
 } // end of set_bhi_hook
 
 
-/* Simple tone generation
+/* Start generating a tone until noTone() is called.
  *
  * Arguments:
  *  frequency:
@@ -828,7 +845,7 @@ void TVout_ve_plus::tone(unsigned int frequency) {
 } // end of tone
 
 
-/* Simple tone generation
+/* Start generating a tone for a specified duration, or until noTone() is called.
  *
  * Arguments:
  *  frequency:
